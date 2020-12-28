@@ -6766,72 +6766,72 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      2156        852          0          0          0      60333   api_lib.o
-      5030       1512          3          0          0      43638   api_msg.o
-       774        196          0          0      24968       5352   bsp_eth.o
-      3962        180          0         20          0      31265   cjson.o
-       512        198          0          4          0       2428   cjson_process.o
-        60          0          0          0          0       1842   def.o
-      4752        868         66         16         50      34823   dhcp.o
-      2162        184          0         12       1152      15187   dns.o
-        28          4         68          0          0       4223   err.o
-      2140        514         65          1        240      12047   etharp.o
-       308         58         12          0          0       2506   ethernet.o
-      1004        204          0         16          0      17351   ethernetif.o
-         0          0          0          0          0       9344   event_groups.o
-       156         16          0          0          0        923   gpio.o
-       576        130          0         24      61440       3947   heap_4.o
-       568        158          0          0          0       4086   icmp.o
-         0          0          0          0          0       6393   if_api.o
-      1902        770         65          8          0      12881   igmp.o
-       174          0          0          0          0       3125   inet_chksum.o
-        42          0          0          0          0        528   init.o
-         0          0          0          0         24       3106   ip.o
-      1060         94          0          8          0       7244   ip4.o
-       494         24          8          0         16      13815   ip4_addr.o
-      2052        458          0          8          0      11102   ip4_frag.o
-       136          0          0          0          0       3182   list.o
-       988        576          0         16          0     773468   main.o
-      1588        602          0         16      15379       7237   mem.o
-       362        150        240         60      74685      10822   memp.o
-      3400       1302         88         12        564      22416   mqttclient.o
-       546         18          0          0          0       6961   mqttconnectclient.o
-       212          0          0          0          0       2336   mqttdeserializepublish.o
-       502         22          0          4          0       9710   mqttpacket.o
-       278          0          0          0          0       5252   mqttserializepublish.o
-       310          0          0          0          0       3359   mqttsubscribeclient.o
-       190         54          0          0          0      11015   netbuf.o
-       906        280          0         12          0      13716   netif.o
-         0          0          0          0          0       2044   netifapi.o
-      2640        978          0          0          0      19812   pbuf.o
-      1014        364          0         12          0      10601   port.o
-      1832        342          0          0         80      13775   queue.o
-      3874        552          0          4        112      46370   sockets.o
+      2156        852          0          0          0      60217   api_lib.o
+      5030       1512          3          0          0      43514   api_msg.o
+       774        196          0          0      24968       5332   bsp_eth.o
+      3962        180          0         20          0      31153   cjson.o
+       512        198          0          4          0       2420   cjson_process.o
+        60          0          0          0          0       1830   def.o
+      4752        868         66         16         50      34711   dhcp.o
+      2162        184          0         12       1152      15151   dns.o
+        28          4         68          0          0       4211   err.o
+      2140        514         65          1        240      12015   etharp.o
+       308         58         12          0          0       2494   ethernet.o
+      1004        204          0         16          0      17319   ethernetif.o
+         0          0          0          0          0       9332   event_groups.o
+       156         16          0          0          0        915   gpio.o
+       576        130          0         24      61440       3927   heap_4.o
+       568        158          0          0          0       4070   icmp.o
+         0          0          0          0          0       6385   if_api.o
+      1902        770         65          8          0      12825   igmp.o
+       174          0          0          0          0       3113   inet_chksum.o
+        42          0          0          0          0        524   init.o
+         0          0          0          0         24       3098   ip.o
+      1060         94          0          8          0       7220   ip4.o
+       494         24          8          0         16      13791   ip4_addr.o
+      2052        458          0          8          0      11062   ip4_frag.o
+       136          0          0          0          0       3162   list.o
+       988        576          0         16          0     773392   main.o
+      1588        602          0         16      15379       7205   mem.o
+       362        150        240         60      74685      10794   memp.o
+      3400       1302         88         12        564      22368   mqttclient.o
+       546         18          0          0          0       6937   mqttconnectclient.o
+       212          0          0          0          0       2328   mqttdeserializepublish.o
+       502         22          0          4          0       9658   mqttpacket.o
+       278          0          0          0          0       5228   mqttserializepublish.o
+       310          0          0          0          0       3351   mqttsubscribeclient.o
+       190         54          0          0          0      10999   netbuf.o
+       906        280          0         12          0      13680   netif.o
+         0          0          0          0          0       2040   netifapi.o
+      2640        978          0          0          0      19740   pbuf.o
+      1014        364          0         12          0      10561   port.o
+      1832        342          0          0         80      13731   queue.o
+      3874        552          0          4        112      46278   sockets.o
         36          8        428          0       1024        836   startup_stm32f429xx.o
-       180         28          0         12          0       9541   stm32f4xx_hal.o
-       222         14          0          0          0      34573   stm32f4xx_hal_cortex.o
-        36          0          0          0          0       1211   stm32f4xx_hal_dma.o
-      2012         70          0          0          0      12541   stm32f4xx_hal_eth.o
-       874        102          0          0          0       3374   stm32f4xx_hal_gpio.o
-        48          6          0          0          0        826   stm32f4xx_hal_msp.o
-       112         14          0          0          0       1284   stm32f4xx_hal_pwr_ex.o
-      1344         82          0          0          0       5700   stm32f4xx_hal_rcc.o
-      1254         16          0          0          0       9515   stm32f4xx_hal_uart.o
-        68          4          0          0          0       4067   stm32f4xx_it.o
-       922        254         78         24         92      14349   sys_arch.o
-        28          6         24          4          0       1127   system_stm32f4xx.o
-      2694        682          0         60        740      28637   tasks.o
-      5016       1648        201         32          0      37055   tcp.o
-      4750       1052          0         36         16      20135   tcp_in.o
-      5940       1940         85          0          0      33302   tcp_out.o
-       572        192          0         16          0       9869   tcpip.o
-       564        192         56         12          0       6923   timeouts.o
-       164         22          0          4          0      10540   transport.o
-      2184        832          0          8          0      14104   udp.o
-       220         30          0          0         64       2296   usart.o
+       180         28          0         12          0       9517   stm32f4xx_hal.o
+       222         14          0          0          0      34557   stm32f4xx_hal_cortex.o
+        36          0          0          0          0       1203   stm32f4xx_hal_dma.o
+      2012         70          0          0          0      12509   stm32f4xx_hal_eth.o
+       874        102          0          0          0       3358   stm32f4xx_hal_gpio.o
+        48          6          0          0          0        822   stm32f4xx_hal_msp.o
+       112         14          0          0          0       1280   stm32f4xx_hal_pwr_ex.o
+      1344         82          0          0          0       5680   stm32f4xx_hal_rcc.o
+      1254         16          0          0          0       9479   stm32f4xx_hal_uart.o
+        68          4          0          0          0       4035   stm32f4xx_it.o
+       922        254         78         24         92      14269   sys_arch.o
+        28          6         24          4          0       1119   system_stm32f4xx.o
+      2694        682          0         60        740      28549   tasks.o
+      5016       1648        201         32          0      36943   tcp.o
+      4750       1052          0         36         16      20099   tcp_in.o
+      5940       1940         85          0          0      33230   tcp_out.o
+       572        192          0         16          0       9829   tcpip.o
+       564        192         56         12          0       6887   timeouts.o
+       164         22          0          4          0      10520   transport.o
+      2184        832          0          8          0      14048   udp.o
+       220         30          0          0         64       2276   usart.o
 
     ----------------------------------------------------------------------
-     78036      18854       1568        464     180652    1531370   Object Totals
+     78036      18854       1568        464     180652    1529126   Object Totals
          0          0         64          0          0          0   (incl. Generated)
        106          0         17          3          6          0   (incl. Padding)
 
@@ -6910,8 +6910,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     84444      19034       1704        472     180652    1477742   Grand Totals
-     84444      19034       1704        472     180652    1477742   ELF Image Totals
+     84444      19034       1704        472     180652    1475498   Grand Totals
+     84444      19034       1704        472     180652    1475498   ELF Image Totals
      84444      19034       1704        472          0          0   ROM Totals
 
 ==============================================================================
