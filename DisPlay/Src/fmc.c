@@ -49,7 +49,7 @@ static void SDRAM_InitSequence(void)
   
 /* Step 3 --------------------------------------------------------------------*/
   /* 配置命令：开启提供给SDRAM的时钟 */
-  Command.CommandMode = FMC_SDRAM_CMD_CLK_ENABLE;//使能时钟100ns
+  Command.CommandMode = FMC_SDRAM_CMD_CLK_ENABLE;//使能时钟并等待100ns
   Command.CommandTarget = FMC_COMMAND_TARGET_BANK;//FMC内部 选择存储区域2（硬件接线决定）
   Command.AutoRefreshNumber = 1;//无效配置
   Command.ModeRegisterDefinition = 0;//无效配置
@@ -80,11 +80,11 @@ static void SDRAM_InitSequence(void)
   
 /* Step 7 --------------------------------------------------------------------*/
   /* 设置sdram寄存器配置 */
-  tmpr = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_8          |//8字节突发
-                   SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |//连续模式
+  tmpr = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1          |//突发长度（一次读一个(16bit)数据）
+                   SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL   |//顺序模式
                    SDRAM_MODEREG_CAS_LATENCY_2           |//与时序结构体相同
                    SDRAM_MODEREG_OPERATING_MODE_STANDARD |//标准模式
-                   SDRAM_MODEREG_WRITEBURST_MODE_PROGRAMMED;//写突发跟读突发一致
+                   SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;// 0不具备写突发模式 1写突发跟读突发一致
   
   /* 配置命令：设置SDRAM寄存器 */
   Command.CommandMode = FMC_SDRAM_CMD_LOAD_MODE;//配置加载模式寄存器
@@ -107,6 +107,114 @@ static void SDRAM_InitSequence(void)
 //  {
 //  }
 }
+
+/**
+  * @brief  以“字”为单位向sdram写入数据 
+  * @param  pBuffer: 指向数据的指针 
+  * @param  uwWriteAddress: 要写入的SDRAM内部地址
+  * @param  uwBufferSize: 要写入数据大小
+  * @retval None.
+  */
+void SDRAM_WriteBuffer(uint32_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBufferSize)
+{
+  HAL_SDRAM_Write_32b(&hsdram1,(uint32_t*)(SDRAM_BANK_ADDR+uwWriteAddress),pBuffer,uwBufferSize);
+}
+
+/**
+  * @brief  从SDRAM中读取数据 
+  * @param  pBuffer: 指向存储数据的buffer
+  * @param  ReadAddress: 要读取数据的地十
+  * @param  uwBufferSize: 要读取的数据大小
+  * @retval None.
+  */
+void SDRAM_ReadBuffer(uint32_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBufferSize)
+{
+HAL_SDRAM_Read_32b(&hsdram1,(uint32_t*)(SDRAM_BANK_ADDR+uwReadAddress),pBuffer,uwBufferSize);
+}
+
+
+/**
+  * @brief  测试SDRAM是否正常 
+  * @param  None
+  * @retval 正常返回1，异常返回0
+  */
+uint8_t SDRAM_Test(void)
+{
+  /*写入数据计数器*/
+  uint32_t counter=0;
+  
+  /* 8位的数据 */
+  uint8_t ubWritedata_8b = 0, ubReaddata_8b = 0;  
+  
+  /* 16位的数据 */
+  uint16_t uhWritedata_16b = 0, uhReaddata_16b = 0; 
+  
+  SDRAM_INFO("正在检测SDRAM，以8位、16位的方式读写sdram...");
+
+
+  /*按8位格式读写数据，并校验*/
+  
+  /* 把SDRAM数据全部重置为0 ，IS42S16400J_SIZE是以8位为单位的 */
+  for (counter = 0x00; counter < IS42S16400J_SIZE; counter++)
+  {
+    *(__IO uint8_t*) (SDRAM_BANK_ADDR + counter) = (uint8_t)0x0;
+  }
+  
+  /* 向整个SDRAM写入数据  8位 */
+  for (counter = 0; counter < IS42S16400J_SIZE; counter++)
+  {
+    *(__IO uint8_t*) (SDRAM_BANK_ADDR + counter) = (uint8_t)(ubWritedata_8b + counter);
+  }
+  
+  /* 读取 SDRAM 数据并检测*/
+  for(counter = 0; counter<IS42S16400J_SIZE;counter++ )
+  {
+    ubReaddata_8b = *(__IO uint8_t*)(SDRAM_BANK_ADDR + counter);  //从该地址读出数据
+    if(ubReaddata_8b != (uint8_t)(ubWritedata_8b + counter))      //检测数据，若不相等，跳出函数,返回检测失败结果。
+    {
+      SDRAM_ERROR("8位数据读写错误！");
+      return 0;
+    }
+  }
+	
+  
+  /*按16位格式读写数据，并检测*/
+  
+  /* 把SDRAM数据全部重置为0 */
+  for (counter = 0x00; counter < IS42S16400J_SIZE/2; counter++)
+  {
+    *(__IO uint16_t*) (SDRAM_BANK_ADDR + 2*counter) = (uint16_t)0x00;
+  }
+  
+  /* 向整个SDRAM写入数据  16位 */
+  for (counter = 0; counter < IS42S16400J_SIZE/2; counter++)
+  {
+    *(__IO uint16_t*) (SDRAM_BANK_ADDR + 2*counter) = (uint16_t)(uhWritedata_16b + counter);
+  }
+  
+    /* 读取 SDRAM 数据并检测*/
+  for(counter = 0; counter<IS42S16400J_SIZE/2;counter++ )
+  {
+    uhReaddata_16b = *(__IO uint16_t*)(SDRAM_BANK_ADDR + 2*counter);  //从该地址读出数据
+    
+    if(uhReaddata_16b != (uint16_t)(uhWritedata_16b + counter))      //检测数据，若不相等，跳出函数,返回检测失败结果。
+    {
+      SDRAM_ERROR("16位数据读写错误！");
+
+      return 0;
+    }
+  }
+
+  
+//  SDRAM_INFO("SDRAM读写测试正常！"); 
+  /*检测正常，return 1 */
+  return 1;
+  
+
+}
+
+
+/*********************************************END OF FILE**********************/
 /* USER CODE END 0 */
 
 SDRAM_HandleTypeDef hsdram1;
@@ -136,7 +244,7 @@ void MX_FMC_Init(void)
   hsdram1.Init.CASLatency = FMC_SDRAM_CAS_LATENCY_2;
   hsdram1.Init.WriteProtection = FMC_SDRAM_WRITE_PROTECTION_DISABLE;
   hsdram1.Init.SDClockPeriod = FMC_SDRAM_CLOCK_PERIOD_2;
-  hsdram1.Init.ReadBurst = FMC_SDRAM_RBURST_ENABLE;
+  hsdram1.Init.ReadBurst = FMC_SDRAM_RBURST_DISABLE;
   hsdram1.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_1;
   /* SdramTiming */
   SdramTiming.LoadToActiveDelay = 2;

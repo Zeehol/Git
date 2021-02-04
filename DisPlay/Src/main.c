@@ -67,6 +67,9 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   uint8_t temp = 1,temp1 = 'A';
+  uint32_t *pSDRAM= (uint32_t*)0xD0000000;
+  uint32_t buffer[] = {0xABCDEF98,0xABCDEF97,0xABCDEF96};
+  uint32_t buffer1[3];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -91,11 +94,16 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   printf("DisPlay!!!\n");
-  while(HAL_SDRAM_Write_8b(&hsdram1,(uint32_t*)0xD0000000,&temp1,1) != HAL_OK);
+  while(HAL_SDRAM_Write_8b(&hsdram1,pSDRAM,&temp1,1) != HAL_OK);
   printf("Write to successful!!!\n");  
   
-  while(HAL_SDRAM_Read_8b(&hsdram1,(uint32_t*)0xD0000000,&temp,1) != HAL_OK);
+  while(HAL_SDRAM_Read_8b(&hsdram1,pSDRAM,&temp,1) != HAL_OK);
   printf("%c\n",temp);
+  SDRAM_WriteBuffer(buffer,0,3);
+  SDRAM_ReadBuffer(buffer1,0,3);
+  printf("%x\n",buffer1[0]);
+  printf("%x\n",buffer1[1]);
+  printf("%x\n",buffer1[2]);
   /* USER CODE END 2 */
 
   /* Infinite loop */

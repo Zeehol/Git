@@ -48,7 +48,7 @@ Bank 地址：BA0,BA1
   时钟线：
   PG8   ------> FMC_SDCLK
   
-  时钟使能线：存储区域2时钟使能（决定存储区域的地址）
+  时钟使能线：存储区域2时钟使能（决定存储区域的地址）//禁止时钟使能后，内部SDRAM回进行自我刷新（self refresh），自我刷新除了CKE之外所有命令无效，使能CKE后需要自动刷新（AUTO refresh），64ms一个周期
   PH7   ------> FMC_SDCKE1
   片选线：存储区域2芯片使能
   
@@ -62,7 +62,7 @@ Bank 地址：BA0,BA1
   Bank地址线：4个bank
   PG4   ------> FMC_BA0
   PG5   ------> FMC_BA1
-  数据掩码信号线：
+  数据掩码信号线：(DQM[0:1]) 1 0 地数据有效，0 1 高数据有效， 0 0 全有效
   PE0   ------> FMC_NBL0
   PE1   ------> FMC_NBL1
   */
@@ -90,7 +90,15 @@ hsdram1.Init.SDClockPeriod = FMC_SDRAM_CLOCK_PERIOD_2; = 90M
 hsdram1.Init.ReadBurst = FMC_SDRAM_RBURST_ENABLE; 使能突发读
 hsdram1.Init.ReadPipeDelay = FMC_SDRAM_RPIPE_DELAY_1; CAS后等待的时钟周期
 
-3.初始化SDRAM芯片：
+3. 6步初始化SDRAM芯片：
 
-4.设置SDRAM的刷新周期：
+配置加载模式寄存器：
+1.读突发长度：1、2、4、8个数据突发，目前为1
+2.突发类型：顺序突发、交叉（跳跃）突发
+3.列地址选通延迟：2、3，根据芯片时钟支持最大频率选择
+4.工作模式：标准、测试，选标准
+5.写突发模式：0表示跟读突发一样，1表示不突发
 
+
+设置SDRAM的刷新周期：
+count = （64ms/4096行）/T -20 = 15.625us*90M - 20= 1406 -20 = 1386

@@ -27,12 +27,22 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 extern SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN Private defines */
+/*信息输出*/
+#define SDRAM_DEBUG_ON         1
+
+#define SDRAM_INFO(fmt,arg...)           printf("<<-SDRAM-INFO->> "fmt"\n",##arg)
+#define SDRAM_ERROR(fmt,arg...)          printf("<<-SDRAM-ERROR->> "fmt"\n",##arg)
+#define SDRAM_DEBUG(fmt,arg...)          do{\
+                                          if(SDRAM_DEBUG_ON)\
+                                          printf("<<-SDRAM-DEBUG->> [%d]"fmt"\n",__LINE__, ##arg);\
+                                          }while(0)
+
 
 #define IS42S16400J_SIZE 0x800000  //400000*16bits = 0x800000  ，8M字节
 
@@ -101,7 +111,9 @@ void HAL_SDRAM_MspInit(SDRAM_HandleTypeDef* hsdram);
 void HAL_SDRAM_MspDeInit(SDRAM_HandleTypeDef* hsdram);
 
 /* USER CODE BEGIN Prototypes */
-
+void  SDRAM_WriteBuffer(uint32_t* pBuffer, uint32_t uwWriteAddress, uint32_t uwBufferSize);
+void  SDRAM_ReadBuffer(uint32_t* pBuffer, uint32_t uwReadAddress, uint32_t uwBufferSize);
+uint8_t SDRAM_Test(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
